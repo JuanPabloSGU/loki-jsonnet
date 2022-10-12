@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: simple-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/JuanPabloSGU/loki-jsonnet.git
+    targetRevision: HEAD
+    path: k8s/argocd/overlays/sandbox
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: simple-app
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - respectIgnoreDifferences=true
